@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Instagram Clone</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--Bootsrap 4 CDN-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      
+      <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="css/blog-home.css" rel="stylesheet">
+
+    <style>
+
+    body {
+      padding-top: 54px;
+    }
+
+    @media (min-width: 992px) {
+      body {
+        padding-top: 56px;
+      }
+    }
+
+    </style>
+
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">Instagram Clone</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link"  href="http://localhost/dashboard"><span class="fa fa-images"></span> Dashboard
+              </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="http://localhost/profile"><span class="fa fa-user"></span> Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://localhost/post_photo"><span class="fa fa-camera"></span> Postar Foto</a>
+            </li>
+            <li class="nav-item">
+               <a class="nav-link" href="http://localhost/logout"><span class="fa fa-sign-out-alt"></span> Sair</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class='test' data-test-value='<%= user %>'></div>
+    <!-- Page Content -->
+    <div class="container">
+
+      <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+          <h1 class="my-4">Pesquisar
+            <small>Users</small>
+          </h1>
+
+          <div id="container_timeline">
+
+             <div class="row view-group" id="container_my_followers">
+                <table class="table table-striped">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Users</th>
+              </tr>
+            </thead>
+            <tbody id="tr_my_followers">
+            </tbody>
+          </table>
+          </div> 
+
+
+          </div>
+
+
+          <!-- Pagination -->
+          <!-- 
+          <ul class="pagination justify-content-center mb-4">
+            <li class="page-item">
+              <a class="page-link" href="#">&larr; Antigos</a>
+            </li>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Novos &rarr;</a>
+            </li>
+          </ul>
+          -->
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4">
+
+          <!-- Search Widget -->
+          <div class="card my-4">
+            <h5 class="card-header">Pesquisar</h5>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" class="form-control" id="usuario_pesquisar" placeholder="Pesquisar usuario">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" id="btPesquisar" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories Widget -->
+         <div class="card my-4">
+            <h5 class="card-header">Meu Profile</h5>
+            <div class="card-body ">
+              <div class="row" id="profile">
+              
+              </div>
+            </div>
+          </div>
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+    </div>
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Anny Walker 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <script type="text/javascript">
+    
+      $('#btPesquisar').click(function(){
+
+          var usuarioPesquisar = document.getElementById("usuario_pesquisar").value;
+
+
+          if (usuarioPesquisar != '')
+          window.location = "http://localhost/search_user/"+usuarioPesquisar;
+
+
+        });
+
+      var url = window.location.pathname;
+      var id = url.substring(url.lastIndexOf('/') + 1);
+
+
+      function carrega_perfil_search(){
+        xhr = new XMLHttpRequest();
+
+        xhr.open("GET","http://localhost:8080/api_get_profile_look_like/"+id);
+
+
+
+        xhr.onload = function(){
+          var data = $.parseJSON(xhr.responseText);
+          console.log(data.length);
+
+          if (data.length>0){
+            for (var a = 0 ; a < data.length; a++){
+              $('#tr_my_followers').append(
+                '<tr>'+
+                '<th>'+
+                  '<form action="http://localhost/profile_id/'+data[a].username+'" method="get">'+
+                            '<button type="submit" class="btn btn-default">'+
+                            '@'+data[a].username+
+                            '</button>'+
+                          '</form>'+
+                '</th>'+  
+                '<tr>'
+              );
+            }
+          } else {
+            $('#tr_my_followers').append(
+            '<tr>'+
+              '<th>'+
+                'Nenhum usuário encontrado.'+
+              '</th>'+  
+              '<tr>'
+              );
+          }
+
+        }
+
+        xhr.send();
+
+      }
+
+
+
+
+      carrega_perfil_search();
+
+
+      function carrega_perfil(){
+
+        var username = "<%= user.username %>";
+
+          //criar xmlhttrequest
+          var xhr2 = new XMLHttpRequest();;
+
+          //monta requisicao
+          xhr2.open("GET","http://localhost:8080/api_get_profile/"+username);
+          xhr2.onload = function(){
+            if (xhr2.status === 200){
+
+              console.log()
+              var data = $.parseJSON(xhr2.responseText);
+
+              console.log("data:"+JSON.stringify(data));
+
+                var imageProfile;
+
+                if (data.url_imagem != undefined){
+                    imageProfile = '<div class="col-sm-12 col-md-12 " >'+
+                    '<img  class="card-img-top" src="http://localhost:8080/imagens/'+data.url_imagem +'"/>'+
+                    '</div>';
+                } else {
+                   imageProfile = '<div class="col-sm-12 col-md-12 " >'+
+                    '<img src="http://placehold.it/140x140" alt="" class="profile-userpic" />'+
+                    '</div>';
+                }
+
+                var loationProfile;
+
+                if (data.localizacao != undefined){
+                    locationProfile = '<p>'+
+                        '<span class="fa fa-map-marker-alt "></span> '+data.localizacao+
+                        '</p>';
+                } else {
+                   locationProfile='';
+                }
+
+                var bioProfile;
+
+                if (data.bio != undefined){
+                    bioProfile = '<p>'+
+                        '<span class="fa fa-book-reader  "></span> '+data.bio+
+                        '</p>';
+                } else {
+                   bioProfile='';
+                }
+
+
+              $('#profile').append(
+                      imageProfile+
+                    '<div class="col-sm-12 col-md-12">'+
+                        '<h4>'+
+                            '<h3 id="username" class="username">@'+data.username+
+                        '</h3></h4>'+
+                          '<p>'+
+                        '<span class="fa fa-user"></span> '+data.name+
+                        '</p>'+
+                        locationProfile+
+                        bioProfile+
+                        '<p>'+
+                        '<form action="http://localhost/my_following" method="get">'+
+                       ' <button class="btn btn-default" id="bt_following"><span class="fa fa-users"></span> Following '+(data._idFollowing.length - 1)+'</button>'+
+                        '</form>'+
+                       ' </p>'+
+                        '<p>'+
+                        '<form action="http://localhost/my_followers" method="get">'+
+                        '<button class="btn btn-default" id="bt_followers"><span class="fa fa-users"></span> Followers '+ (data._idFollower!=undefined ? data._idFollower.length : 0)+'</button>'+
+                        '</form>'+
+                        '</p>'+
+                        '<div class="btn-group">'+
+                          '<form action="http://localhost/profile_edit" method="get">'+
+                              '<button type="submit" class="btn btn-primary"><span class="fa fa-edit"></span> Editar Perfil</button>'+
+                          '</form>'+
+                        '</div>'+
+                        '<div class="btn-group">'+
+                          '<form action="http://localhost/post_photo" method="get">'+
+                            '<button type="submit" class="btn btn-primary"><span class="fa fa-camera"></span> Postar</button>'+
+                          '</form>'+
+                        '</div>'+
+                    '</div>'
+              );
+            } 
+        }
+
+         xhr2.send();
+
+      }
+
+      carrega_perfil();
+
+
+
+    </script>
+
+  </body>
+
+</html>
