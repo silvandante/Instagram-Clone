@@ -14,7 +14,7 @@
     "express": "^4.16.4",
     "flat": "^4.1.0",
     "mongodb": "^2.2.36",
-    "mongoose": "^5.3.6",
+    "mongoose": "^5.7.5",
     "socket.io": "^2.1.1"
   }
 }
